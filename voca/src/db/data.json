@@ -119,6 +119,27 @@
       "kor": "마스크",
       "isDone": false,
       "id": 15
+    },
+    {
+      "day": "5",
+      "eng": "cup",
+      "kor": "컵",
+      "isDone": false,
+      "id": 16
+    },
+    {
+      "day": "4",
+      "eng": "meat",
+      "kor": "고기",
+      "isDone": false,
+      "id": 17
+    },
+    {
+      "day": "2",
+      "eng": "ring",
+      "kor": "반지",
+      "isDone": false,
+      "id": 18
     }
   ]
 }

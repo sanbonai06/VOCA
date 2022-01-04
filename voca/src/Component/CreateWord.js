@@ -1,36 +1,46 @@
 import useFetch from "../Hooks/useFetch"
 import { useRef } from "react";
 import { useHistory } from "react-router-dom";
+import { useState } from "react";
 export default function CreateWord() {
 
     const days = useFetch('http://localhost:3001/days')
+    
     const history = useHistory();
-
+    const [isLoading, setIsLoading] = useState(false);
     const engRef = useRef(null);
     const korRef = useRef(null);
     const dayRef = useRef(null);
-        
+    if(days.length === 0) {
+    return (
+        <span>Loading...</span>
+        )
+    }   
     function onSubmit(event){
         event.preventDefault();
-        if(window.confirm('저장하시겠습니까?')) {
-            fetch('http://localhost:3001/words', {
-                method: 'POST',
-                headers: {
-                    'Content-type' : 'application/json'
-                },
-                body: JSON.stringify({
-                    'day': dayRef.current.value,
-                    'eng': engRef.current.value,
-                    'kor': korRef.current.value,
-                    'isDone': false,
+        if(!isLoading) {
+            setIsLoading(!isLoading)
+            if(window.confirm('저장하시겠습니까?')) {
+                fetch('http://localhost:3001/words', {
+                    method: 'POST',
+                    headers: {
+                        'Content-type' : 'application/json'
+                    },
+                    body: JSON.stringify({
+                        'day': dayRef.current.value,
+                        'eng': engRef.current.value,
+                        'kor': korRef.current.value,
+                        'isDone': false,
+                    })
                 })
-            })
-            .then(res => {
-                if(res.ok) {
-                    alert('단어가 추가되었습니다');
-                    history.push(`/day/${dayRef.current.value}`);
-                }
-            })
+                .then(res => {
+                    if(res.ok) {
+                        alert('단어가 추가되었습니다');
+                        history.push(`/day/${dayRef.current.value}`);
+                        setIsLoading(!isLoading)
+                    }
+                })
+            }
         }
     }
     return (
@@ -51,7 +61,9 @@ export default function CreateWord() {
                     ))}
                 </select>
             </div>
-            <button>저장하기</button>
+            <button style = {{
+                opacity: isLoading ? 0.3 : 1
+            }}>{isLoading ? 'Saving...' : '저장'}</button>
         </form>
     )
 }

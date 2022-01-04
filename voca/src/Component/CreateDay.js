@@ -3,9 +3,14 @@ import { useState } from "react";
 import { useHistory } from "react-router-dom";
 export default function CreateDay() {
     const days = useFetch('http://localhost:3001/days');
+    
     const lastDay = days.length
     const history = useHistory();
-   
+   if(days.length === 0) {
+        return (
+            <span>Loading...</span>
+        )
+    }
     const addDay = (event) => {
         event.preventDefault();
         if(window.confirm('날짜를 추가하시겠습니까?')) {
